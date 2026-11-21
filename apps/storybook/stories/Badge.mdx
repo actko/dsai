@@ -1,0 +1,10 @@
+import { Markdown, Meta } from "@storybook/addon-docs/blocks"
+
+import * as BadgeStories from "./Badge.stories"
+import guidelines from "../../../packages/ui/src/components/Badge/Badge.md?raw"
+
+{/* Renders the component's usage doc, so Storybook and the npm package share one source. */}
+
+<Meta of={BadgeStories} name="Guidelines" />
+
+<Markdown>{guidelines}</Markdown>

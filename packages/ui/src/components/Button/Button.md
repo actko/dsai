@@ -4,6 +4,30 @@
 
 Triggers an action the user takes on the current page: save, submit, confirm, cancel, open a dialog.
 
+## Import and use
+
+Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@dsai/ui` is not published to npm yet; inside this repo it is a workspace dependency):
+
+```bash
+pnpm add @dsai/ui
+```
+
+Once per app, import the stylesheet right after Tailwind in your global CSS:
+
+```css
+@import "tailwindcss";
+@import "@dsai/ui/styles.css";
+```
+
+Then import the component:
+
+```tsx
+import { Button } from "@dsai/ui"
+
+<Button>Save</Button>
+<Button variant="outline" size="sm">Cancel</Button>
+```
+
 ## When to use
 
 - Submit or reset a form.

@@ -70,29 +70,56 @@ src/components/Button/
 └── index.ts            # folder's public exports
 ```
 
-A new component is public once re-exported from `src/index.ts`, documented in its `.md`, and shown in `apps/docs`.
+A new component is public once re-exported from `src/index.ts`, documented in its `.md`, and shown in `apps/docs`. To add one, follow **Adding a component** below.
 
 **Component docs (`<Component>.md`).** Read the component's `.md` before changing, reviewing or using it to build UI: it is the contract for when to use it, its props, variants and states, and the spec its stories follow. When a change alters any of these, update the `.md` in the same change. Every `.md` follows [`Badge.md`](packages/ui/src/components/Badge/Badge.md), written for designers and AI agents building UI:
 
 1. **Purpose** — one line.
-2. **When to use** / **When not to use** — name the component to use instead where there is one.
-3. **Props and variants** — only ones that exist in the `.tsx`, plus states (hover, focus, disabled, invalid…) and fixed sizes.
-4. **Tokens used** — each `theme.css` variable the component's CSS Module reads, what it colors, and its light and dark values.
-5. **Example** — one, copied from the component's stories.
+2. **Import and use** — the same install command and stylesheet setup in every doc, then the `import` from `@dsai/ui` and a minimal usage that follows the doc's own guidance. Type-check new snippets against `@dsai/ui` before committing.
+3. **When to use** / **When not to use** — name the component to use instead where there is one.
+4. **Props and variants** — only ones that exist in the `.tsx`, plus states (hover, focus, disabled, invalid…) and fixed sizes.
+5. **Tokens used** — each `theme.css` variable the component's CSS Module reads, what it colors, and its light and dark values.
+6. **Example** — one, copied from the component's stories.
 
-Leave out implementation details: exports, data attributes, CSS utilities, file paths. Check every claim against the `.tsx`, `.module.css` and `theme.css`; write `TODO:` with the open question for anything the code doesn't settle (intended use, content limits, missing variants) rather than guessing.
+Outside "Import and use", leave out implementation details: exports, data attributes, CSS utilities, file paths. Check every claim against the `.tsx`, `.module.css` and `theme.css`; write `TODO:` with the open question for anything the code doesn't settle (intended use, content limits, missing variants) rather than guessing.
 
 - **`*.module.css`** starts with `@reference` to `src/styles/reference.css` (relative path) and wraps every rule in `@layer components { … }`. That layer is what lets a consumer's `className` utilities override the defaults; unlayered module rules would beat them.
 - **Variants** map props to module classes: `cva(styles.root, { variants: { size: { sm: styles.sizeSm } } })` or a typed `Record`. Keep the shadcn prop names and values. Also set `data-variant` / `data-size` on the root as styling hooks.
 - **`className`** is always merged last: `cn(styles.root, variantClass, className)`.
-- **CSS Modules gotchas:** a plain class name in a selector gets hashed, so match utility classes with `:global(...)` (e.g. `.header:global(.border-b)`). `group/name` can't be applied; use `in-data-[slot=…]:` or `has-*` instead.
-- **`shadcn add`** (run `pnpm dlx shadcn@latest add <name>` inside `packages/ui`) writes a flat lowercase file with inline classes and alias imports. Move each new component into this structure, convert its classes to the module, and switch to relative imports before using it.
+- **CSS Modules gotchas:** a plain class name in a selector gets hashed, so match utility classes with `:global(...)` (e.g. `.header:global(.border-b)`). `group/name` can't be applied; convert shadcn's `group-*` classes like this (see `Tabs.module.css`):
+  - **State the element carries itself:** Base UI repeats attributes such as `data-orientation` on every part, so `group-data-vertical/tabs:` becomes plain `data-vertical:`. Check the part's `*DataAttributes.d.ts` in `@base-ui/react` first.
+  - **State only an ancestor carries:** `group-data-[variant=line]/tabs-list:` becomes `in-data-[variant=line]:` (or `has-*` for descendants).
+  - **Overrides that won through `group-*` specificity:** the converted selectors have lower specificity, so move them into a second rule for the same class placed after the first; later rules win inside `@layer components`. Inspect `dist/components.css` to confirm the order.
+- **`shadcn add`** (run `pnpm dlx shadcn@latest add <name>` inside `packages/ui`) writes a flat lowercase file with inline classes and alias imports. Move each new component into this structure, convert its classes to the module, and switch to relative imports before using it. Also check what the generated file gets wrong for a library: it may skip `"use client"` where a Base UI hook needs it (Badge's `useRender`), or swallow a prop Base UI needs (shadcn's Tabs set `data-orientation` but never passed `orientation` to the root).
+
+# Adding a component
+
+Every step lands in the same change; Badge and Tabs are worked examples.
+
+1. **Generate:** `pnpm dlx shadcn@latest add <name>` inside `packages/ui`.
+2. **Restructure** into `src/components/<Name>/` (`.tsx`, `.module.css`, `index.ts`), converting classes as described above, then delete the generated flat file. Keep shadcn's prop names, values and exports.
+3. **Export** from `src/index.ts`, run `pnpm --filter @dsai/ui build`, and check `dist`: the JS keeps `"use client"` where needed and `dist/components.css` has the expected selectors.
+4. **Stories:** `apps/storybook/stories/<Name>.stories.tsx` covering every prop value and state. For a compound component (Tabs, Dialog), drive Controls through a small demo wrapper in the stories file (see `TabsDemo`).
+5. **Doc:** `<Name>.md` in the six-section format above. Take the Example from a story, and type-check the "Import and use" snippet against `@dsai/ui`.
+6. **Guidelines page:** `apps/storybook/stories/<Name>.mdx` rendering the `.md` (copy `Tabs.mdx`).
+7. **Show it:** a section in `apps/docs/src/app/page.tsx`, and a row in the components table of `packages/ui/README.md`.
+8. **Verify:** `pnpm format`, `pnpm lint`, `pnpm typecheck`, `pnpm build`, `pnpm pack --dry-run` in `packages/ui`, then the stories, the Guidelines page and the docs app in light and dark.
 
 # Storybook (`apps/storybook`)
 
 Every component gets `stories/<Component>.stories.tsx` (title `Components/<Component>`, `tags: ["autodocs"]`) that covers each prop value and each state listed in the component's `.md`. Button is the reference.
 
-- **Controls:** `ButtonPrimitive.Props & VariantProps<…>` can't be read by docgen from `dist`, so list union props in `argTypes` with explicit `options`.
+Every component with a `.md` also gets `stories/<Component>.mdx`, a **Guidelines** page that renders that `.md` with `<Markdown>` from a `?raw` import (see `Badge.mdx`). The `.md` stays the single source: edit it, never copy its text into the MDX. A component without stories yet uses `<Meta title="Components/<Component>" name="Guidelines" />` instead of `<Meta of={…}>` (see `Dialog.mdx`).
+
+**When a `<Component>.md` changes, update Storybook in the same change:**
+
+- **New `.md`:** add `stories/<Component>.mdx` (copy `Badge.mdx`, or `Dialog.mdx` when there are no stories yet).
+- **Renamed or moved `.md`:** fix the `?raw` import path in its `.mdx`.
+- **Props, variants, sizes or states added or removed:** add or remove the matching stories and `argTypes` options in `<Component>.stories.tsx`, so the stories still cover exactly what the `.md` lists.
+- **Example changed:** it must still be copied from a story; add or edit that story rather than letting the two drift.
+- **Text-only edits** (wording, guidance, TODOs, token notes) need no Storybook change: the Guidelines page renders the `.md` directly. Check the page still renders.
+
+- **Controls:** `ButtonPrimitive.Props & VariantProps<…>` can't be read by docgen from `dist`, so list union props in `argTypes` with explicit `options`. Compound components get a demo wrapper whose props are the controls (see `TabsDemo` in `Tabs.stories.tsx`).
 - **Interaction states:** force `:hover`, `:focus-visible` and `:active` with `parameters: { pseudo: { hover: true } }` (storybook-addon-pseudo-states). A scripted `userEvent.tab()` focuses but never triggers `:focus-visible`, so use `play` only to assert behaviour (e.g. `toHaveFocus`).
 - **Attribute states** (`disabled`, `aria-invalid`, `aria-expanded`): set them as props in a story.
 - **Theme:** the toolbar's Theme switch toggles `.dark` on `<html>`; check stories in both.

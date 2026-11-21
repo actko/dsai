@@ -1,0 +1,10 @@
+import { Markdown, Meta } from "@storybook/addon-docs/blocks"
+
+import * as TabsStories from "./Tabs.stories"
+import guidelines from "../../../packages/ui/src/components/Tabs/Tabs.md?raw"
+
+{/* Renders the component's usage doc, so Storybook and the npm package share one source. */}
+
+<Meta of={TabsStories} name="Guidelines" />
+
+<Markdown>{guidelines}</Markdown>

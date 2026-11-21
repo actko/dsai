@@ -55,6 +55,7 @@ Pass `className` to adjust a component; your Tailwind utilities take precedence 
 | Card        | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`, `CardProps`, `CardSize`                                       |
 | Dialog      | `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogOverlay`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`, `DialogClose` |
 | ProductCard | `ProductCard`, `ProductCardProps`, `ProductCardImage`                                                                                                          |
+| Tabs        | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, `tabsListVariants`                                                                                           |
 
 Base UI composes with the `render` prop rather than `asChild`:
 

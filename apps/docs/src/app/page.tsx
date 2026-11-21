@@ -7,6 +7,10 @@ import {
   CardHeader,
   CardTitle,
   ProductCard,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   type ButtonProps,
   type ProductCardProps,
 } from "@dsai/ui"
@@ -119,6 +123,27 @@ export default function Home() {
         <div className="grid gap-4 sm:grid-cols-3">
           {products.map((product) => (
             <ProductCard key={product.name} {...product} />
+          ))}
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-heading text-xl font-medium">Tabs</h2>
+        <div className="grid gap-8 sm:grid-cols-2">
+          {(["default", "line"] as const).map((variant) => (
+            <Tabs key={variant} defaultValue="account">
+              <TabsList variant={variant}>
+                <TabsTrigger value="account">Account</TabsTrigger>
+                <TabsTrigger value="password">Password</TabsTrigger>
+                <TabsTrigger value="notifications" disabled>
+                  Notifications
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="account">
+                Update your name, email and profile photo.
+              </TabsContent>
+              <TabsContent value="password">Change your password.</TabsContent>
+            </Tabs>
           ))}
         </div>
       </section>

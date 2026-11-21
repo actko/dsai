@@ -4,6 +4,52 @@
 
 A modal window over the page that holds a short, focused task or decision the user must finish or cancel before returning to the page.
 
+## Import and use
+
+Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@dsai/ui` is not published to npm yet; inside this repo it is a workspace dependency):
+
+```bash
+pnpm add @dsai/ui
+```
+
+Once per app, import the stylesheet right after Tailwind in your global CSS:
+
+```css
+@import "tailwindcss";
+@import "@dsai/ui/styles.css";
+```
+
+Then import the parts you need and compose them. The trigger and every action are Buttons:
+
+```tsx
+import {
+  Button,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@dsai/ui"
+
+;<Dialog>
+  <DialogTrigger render={<Button variant="outline" />}>Rename</DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Rename file</DialogTitle>
+      <DialogDescription>Choose a new name for "Q3 report".</DialogDescription>
+    </DialogHeader>
+    {/* form fields */}
+    <DialogFooter>
+      <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+      <DialogClose render={<Button />}>Rename</DialogClose>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
 ## When to use
 
 - A short task the user started that needs a little input to finish: rename an item, edit a few fields, pick an option.

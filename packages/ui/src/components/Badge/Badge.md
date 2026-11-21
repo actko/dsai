@@ -4,6 +4,31 @@
 
 A small, pill-shaped label that marks status, a count or a category next to other content.
 
+## Import and use
+
+Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@dsai/ui` is not published to npm yet; inside this repo it is a workspace dependency):
+
+```bash
+pnpm add @dsai/ui
+```
+
+Once per app, import the stylesheet right after Tailwind in your global CSS:
+
+```css
+@import "tailwindcss";
+@import "@dsai/ui/styles.css";
+```
+
+Then import the component:
+
+```tsx
+import { Badge } from "@dsai/ui"
+
+<Badge>New</Badge>
+<Badge variant="secondary">Draft</Badge>
+<Badge render={<a href="/changelog" />}>What's new</Badge>
+```
+
 ## When to use
 
 - Show the state of an item: "Draft", "Published", "Overdue".
