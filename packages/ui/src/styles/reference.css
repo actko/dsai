@@ -1,0 +1,13 @@
+/*
+ * Target of `@reference` in every *.module.css, and the stylesheet the
+ * Prettier Tailwind plugin reads. Never imported for output.
+ */
+@import "tailwindcss";
+@import "./index.css";
+
+/*
+ * Inside CSS Modules a bare `.dark` would be hashed like a local class, so
+ * the `dark:` variant would never match. Keep it global here; this file is
+ * only ever used through `@reference` from *.module.css.
+ */
+@custom-variant dark (&:is(:global(.dark) *));

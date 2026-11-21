@@ -1,0 +1,33 @@
+@reference "../../styles/reference.css";
+
+/*
+ * Rules live in the `components` layer so Tailwind utilities passed via
+ * `className` (which live in `utilities`) always win.
+ *
+ * The surface, spacing and image corners come from Card: the image is the
+ * Card's first child `<img>`, so Card removes the top padding and rounds it.
+ */
+@layer components {
+  /* ---- Image --------------------------------------------------------- */
+  .image {
+    @apply aspect-square h-auto w-full bg-muted object-cover;
+  }
+
+  /* ---- Text ---------------------------------------------------------- */
+  .body {
+    @apply flex flex-col gap-1;
+  }
+
+  .brand {
+    @apply text-xs font-medium tracking-wide text-muted-foreground uppercase;
+  }
+
+  /* Added to CardTitle: keep every card the same height */
+  .name {
+    @apply line-clamp-2;
+  }
+
+  .price {
+    @apply mt-2 text-base font-semibold text-foreground tabular-nums;
+  }
+}

@@ -1,0 +1,59 @@
+@reference "../../styles/reference.css";
+
+/*
+ * Rules live in the `components` layer so Tailwind utilities passed via
+ * `className` (which live in `utilities`) always win.
+ */
+@layer components {
+  /* ---- Card ---------------------------------------------------------- */
+  .root {
+    @apply flex flex-col gap-(--card-spacing) overflow-hidden rounded-2xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10;
+    @apply [--card-spacing:--spacing(6)];
+    @apply has-[>img:first-child]:pt-0;
+    @apply *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl;
+  }
+
+  /* size="sm" */
+  .sizeSm {
+    @apply [--card-spacing:--spacing(4)];
+  }
+
+  /* ---- Header -------------------------------------------------------- */
+  .header {
+    @apply @container/card-header grid auto-rows-min items-start gap-2 rounded-t-xl px-(--card-spacing);
+    @apply has-data-[slot=card-action]:grid-cols-[1fr_auto];
+    @apply has-data-[slot=card-description]:grid-rows-[auto_auto];
+  }
+
+  /* A bordered header gets bottom padding (`<CardHeader className="border-b">`) */
+  .header:global(.border-b) {
+    @apply pb-(--card-spacing);
+  }
+
+  .title {
+    @apply font-heading text-base font-medium;
+  }
+
+  .description {
+    @apply text-sm text-muted-foreground;
+  }
+
+  .action {
+    @apply col-start-2 row-span-2 row-start-1 self-start justify-self-end;
+  }
+
+  /* ---- Body ---------------------------------------------------------- */
+  .content {
+    @apply px-(--card-spacing);
+  }
+
+  /* ---- Footer -------------------------------------------------------- */
+  .footer {
+    @apply flex items-center rounded-b-xl px-(--card-spacing);
+  }
+
+  /* A bordered footer gets top padding (`<CardFooter className="border-t">`) */
+  .footer:global(.border-t) {
+    @apply pt-(--card-spacing);
+  }
+}
