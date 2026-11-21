@@ -3,6 +3,13 @@
   "version": "0.0.0",
   "description": "DSAI design system: shadcn/ui components on Base UI, for React + Tailwind CSS v4",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/actko/dsai.git",
+    "directory": "packages/ui"
+  },
+  "homepage": "https://github.com/actko/dsai/tree/main/packages/ui#readme",
+  "bugs": "https://github.com/actko/dsai/issues",
   "type": "module",
   "sideEffects": [
     "**/*.css"
