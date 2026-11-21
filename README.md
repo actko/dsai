@@ -4,10 +4,11 @@ A design system built on [shadcn/ui](https://ui.shadcn.com) and [Base UI](https:
 
 ## Repository layout
 
-| Path                         | What it is                                                              |
-| ---------------------------- | ----------------------------------------------------------------------- |
-| [`packages/ui`](packages/ui) | `@dsai/ui`, the published component library (built to `dist` with Vite) |
-| [`apps/docs`](apps/docs)     | Next.js playground that uses the built library like any other app would |
+| Path                               | What it is                                                              |
+| ---------------------------------- | ----------------------------------------------------------------------- |
+| [`packages/ui`](packages/ui)       | `@dsai/ui`, the published component library (built to `dist` with Vite) |
+| [`apps/docs`](apps/docs)           | Next.js playground that uses the built library like any other app would |
+| [`apps/storybook`](apps/storybook) | Storybook for checking each component's props and states                |
 
 ## Development
 
@@ -15,7 +16,7 @@ Requires Node.js and [pnpm](https://pnpm.io) 12.
 
 ```bash
 pnpm install
-pnpm dev         # builds @dsai/ui, watches it, and runs the docs app on http://localhost:3000
+pnpm dev         # builds @dsai/ui, watches it, and runs docs (http://localhost:3000) and Storybook (http://localhost:6006)
 pnpm lint
 pnpm typecheck
 pnpm build

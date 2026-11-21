@@ -1,0 +1,16 @@
+/* Same setup a consumer app uses: the built @dsai/ui, not its source. */
+@import "tailwindcss";
+@import "@dsai/ui/styles.css";
+
+/* Stories use utilities in their own markup. */
+@source "../stories";
+
+/* Consumers provide these fonts; apps/docs does it with next/font. */
+:root {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  @apply font-sans;
+}

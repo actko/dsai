@@ -6,6 +6,20 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["-y", "pnpm@12.21.0", "dev", "--ui=stream"],
       "port": 3000
+    },
+    {
+      "name": "storybook",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "-y",
+        "pnpm@12.21.0",
+        "turbo",
+        "run",
+        "dev",
+        "--filter=storybook...",
+        "--ui=stream"
+      ],
+      "port": 6006
     }
   ]
 }

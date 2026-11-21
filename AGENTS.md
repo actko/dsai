@@ -10,19 +10,21 @@ pnpm workspaces + Turborepo monorepo:
 
 - `packages/ui` — **the published npm package `@dsai/ui`**. Everything consumers install lives here.
 - `apps/docs` — Next.js 16 + Tailwind CSS v4 playground that consumes the built `@dsai/ui` (`dist`) as a workspace dependency, set up exactly as an external consumer would be. Never published.
+- `apps/storybook` — Storybook 10 (React + Vite) for checking each component's props and states, also on the built `dist`. Never published.
 
 # Commands
 
 ```bash
 pnpm install
-pnpm dev                       # turbo: builds ui, then ui watch build + docs on http://localhost:3000 (.claude/launch.json "docs")
+pnpm dev                       # turbo: builds ui, then ui watch build + docs (:3000) + Storybook (:6006)
+pnpm turbo run dev --filter=storybook...   # ui watch + Storybook only (.claude/launch.json "storybook")
 pnpm lint | pnpm typecheck | pnpm build   # turbo across all packages; each first builds @dsai/ui
 pnpm --filter @dsai/ui build   # one package
 cd packages/ui && pnpm pack --dry-run   # list what would be published
 pnpm format                    # prettier on everything, incl. *.module.css
 ```
 
-`apps/docs` resolves `@dsai/ui` to `packages/ui/dist`, so anything that runs docs needs a built `dist` first; the Turbo tasks take care of that. Test runner: none yet. Verify with `lint`, `typecheck`, `build` and the docs app.
+`apps/docs` and `apps/storybook` resolve `@dsai/ui` to `packages/ui/dist`, so they need a built `dist` first; the Turbo tasks take care of that. Test runner: none yet. Verify with `lint`, `typecheck`, `build`, the docs app and Storybook.
 
 # Library build (`packages/ui`, Vite library mode)
 
@@ -74,6 +76,16 @@ A new component is public once re-exported from `src/index.ts` and shown in `app
 - **`className`** is always merged last: `cn(styles.root, variantClass, className)`.
 - **CSS Modules gotchas:** a plain class name in a selector gets hashed, so match utility classes with `:global(...)` (e.g. `.header:global(.border-b)`). `group/name` can't be applied; use `in-data-[slot=…]:` or `has-*` instead.
 - **`shadcn add`** (run `pnpm dlx shadcn@latest add <name>` inside `packages/ui`) writes a flat lowercase file with inline classes and alias imports. Move each new component into this structure, convert its classes to the module, and switch to relative imports before using it.
+
+# Storybook (`apps/storybook`)
+
+Every component gets `stories/<Component>.stories.tsx` (title `Components/<Component>`, `tags: ["autodocs"]`) that covers each prop value and each state from the component's `.md`. Button is the reference.
+
+- **Controls:** `ButtonPrimitive.Props & VariantProps<…>` can't be read by docgen from `dist`, so list union props in `argTypes` with explicit `options`.
+- **Interaction states:** force `:hover`, `:focus-visible` and `:active` with `parameters: { pseudo: { hover: true } }` (storybook-addon-pseudo-states). A scripted `userEvent.tab()` focuses but never triggers `:focus-visible`, so use `play` only to assert behaviour (e.g. `toHaveFocus`).
+- **Attribute states** (`disabled`, `aria-invalid`, `aria-expanded`): set them as props in a story.
+- **Theme:** the toolbar's Theme switch toggles `.dark` on `<html>`; check stories in both.
+- **Setup quirks:** `.storybook/preview.css` mirrors a consumer's global CSS and defines `--font-sans`/`--font-heading` (fonts load in `preview-head.html`). `next/image` is aliased to `.storybook/next-image.tsx`, a plain `<img>`, because it only runs inside Next.js. The a11y panel reports violations without failing (`a11y.test: "todo"`).
 
 # Code style
 
