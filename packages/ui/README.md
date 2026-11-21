@@ -50,6 +50,7 @@ Pass `className` to adjust a component; your Tailwind utilities take precedence 
 
 | Component   | Exports                                                                                                                                                        |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Badge       | `Badge`, `badgeVariants`, `BadgeProps`                                                                                                                         |
 | Button      | `Button`, `buttonVariants`, `ButtonProps`                                                                                                                      |
 | Card        | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`, `CardProps`, `CardSize`                                       |
 | Dialog      | `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogOverlay`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`, `DialogClose` |

@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Card,
   CardContent,
@@ -78,6 +79,27 @@ export default function Home() {
             <Plus />
           </Button>
           <Button disabled>Disabled</Button>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-heading text-xl font-medium">Badge</h2>
+        <div className="flex flex-wrap items-center gap-2">
+          {(
+            [
+              "default",
+              "secondary",
+              "destructive",
+              "outline",
+              "ghost",
+              "link",
+            ] as const
+          ).map((variant) => (
+            <Badge key={variant} variant={variant}>
+              {variant}
+            </Badge>
+          ))}
+          <Badge render={<a href="#" />}>As link</Badge>
         </div>
       </section>
 

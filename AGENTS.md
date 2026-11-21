@@ -66,13 +66,21 @@ Each component has its own PascalCase folder, with styling kept out of the marku
 src/components/Button/
 ├── Button.tsx          # markup + props only, no Tailwind class strings
 ├── Button.module.css   # all styles, written with Tailwind @apply
-├── Button.md           # usage doc for package users; ships to npm
+├── Button.md           # usage doc for designers and AI agents; ships to npm
 └── index.ts            # folder's public exports
 ```
 
 A new component is public once re-exported from `src/index.ts`, documented in its `.md`, and shown in `apps/docs`.
 
-**Component docs (`<Component>.md`).** Read the component's `.md` before changing or reviewing it: it is the contract for its props, variants, sizes and states, and the spec its stories follow. When a change alters any of these, update the `.md` in the same change. A new component's `.md` follows [`Button.md`](packages/ui/src/components/Button/Button.md): same section order, written for someone who installed `@dsai/ui` (imports from `@dsai/ui`, no repo paths or internal file names), and every claim checked against the `.tsx`/`.module.css`.
+**Component docs (`<Component>.md`).** Read the component's `.md` before changing, reviewing or using it to build UI: it is the contract for when to use it, its props, variants and states, and the spec its stories follow. When a change alters any of these, update the `.md` in the same change. Every `.md` follows [`Badge.md`](packages/ui/src/components/Badge/Badge.md), written for designers and AI agents building UI:
+
+1. **Purpose** — one line.
+2. **When to use** / **When not to use** — name the component to use instead where there is one.
+3. **Props and variants** — only ones that exist in the `.tsx`, plus states (hover, focus, disabled, invalid…) and fixed sizes.
+4. **Tokens used** — each `theme.css` variable the component's CSS Module reads, what it colors, and its light and dark values.
+5. **Example** — one, copied from the component's stories.
+
+Leave out implementation details: exports, data attributes, CSS utilities, file paths. Check every claim against the `.tsx`, `.module.css` and `theme.css`; write `TODO:` with the open question for anything the code doesn't settle (intended use, content limits, missing variants) rather than guessing.
 
 - **`*.module.css`** starts with `@reference` to `src/styles/reference.css` (relative path) and wraps every rule in `@layer components { … }`. That layer is what lets a consumer's `className` utilities override the defaults; unlayered module rules would beat them.
 - **Variants** map props to module classes: `cva(styles.root, { variants: { size: { sm: styles.sizeSm } } })` or a typed `Record`. Keep the shadcn prop names and values. Also set `data-variant` / `data-size` on the root as styling hooks.
