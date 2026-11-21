@@ -28,7 +28,7 @@ pnpm format                    # prettier on everything, incl. *.module.css
 
 # Library build (`packages/ui`, Vite library mode)
 
-`vite build && tsc -p tsconfig.build.json` produces `dist/`, which is all that ships (plus `Button.md`-style docs from `src/components/**/*.md`). Config is in `packages/ui/vite.config.ts`:
+`vite build && tsc -p tsconfig.build.json` produces `dist/`, which is all that ships (plus the component docs, `src/components/**/*.md`). Config is in `packages/ui/vite.config.ts`:
 
 - **JS:** ESM only, one output file per source module (`preserveModules`), so consumers tree-shake and each file keeps its own `"use client"`. A plugin guarantees that directive survives bundling. Every `dependency` and `peerDependency` stays an external bare import.
 - **Types:** `tsc -p tsconfig.build.json` emits `.d.ts` next to the JS. `types/css-modules.d.ts` exists only for local type checking.
@@ -66,10 +66,13 @@ Each component has its own PascalCase folder, with styling kept out of the marku
 src/components/Button/
 ├── Button.tsx          # markup + props only, no Tailwind class strings
 ├── Button.module.css   # all styles, written with Tailwind @apply
+├── Button.md           # usage doc for package users; ships to npm
 └── index.ts            # folder's public exports
 ```
 
-A new component is public once re-exported from `src/index.ts` and shown in `apps/docs`.
+A new component is public once re-exported from `src/index.ts`, documented in its `.md`, and shown in `apps/docs`.
+
+**Component docs (`<Component>.md`).** Read the component's `.md` before changing or reviewing it: it is the contract for its props, variants, sizes and states, and the spec its stories follow. When a change alters any of these, update the `.md` in the same change. A new component's `.md` follows [`Button.md`](packages/ui/src/components/Button/Button.md): same section order, written for someone who installed `@dsai/ui` (imports from `@dsai/ui`, no repo paths or internal file names), and every claim checked against the `.tsx`/`.module.css`.
 
 - **`*.module.css`** starts with `@reference` to `src/styles/reference.css` (relative path) and wraps every rule in `@layer components { … }`. That layer is what lets a consumer's `className` utilities override the defaults; unlayered module rules would beat them.
 - **Variants** map props to module classes: `cva(styles.root, { variants: { size: { sm: styles.sizeSm } } })` or a typed `Record`. Keep the shadcn prop names and values. Also set `data-variant` / `data-size` on the root as styling hooks.
@@ -79,7 +82,7 @@ A new component is public once re-exported from `src/index.ts` and shown in `app
 
 # Storybook (`apps/storybook`)
 
-Every component gets `stories/<Component>.stories.tsx` (title `Components/<Component>`, `tags: ["autodocs"]`) that covers each prop value and each state from the component's `.md`. Button is the reference.
+Every component gets `stories/<Component>.stories.tsx` (title `Components/<Component>`, `tags: ["autodocs"]`) that covers each prop value and each state listed in the component's `.md`. Button is the reference.
 
 - **Controls:** `ButtonPrimitive.Props & VariantProps<…>` can't be read by docgen from `dist`, so list union props in `argTypes` with explicit `options`.
 - **Interaction states:** force `:hover`, `:focus-visible` and `:active` with `parameters: { pseudo: { hover: true } }` (storybook-addon-pseudo-states). A scripted `userEvent.tab()` focuses but never triggers `:focus-visible`, so use `play` only to assert behaviour (e.g. `toHaveFocus`).
