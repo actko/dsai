@@ -30,6 +30,8 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 24
+          # pnpm doesn't exist yet at this point; the store is cached below.
+          package-manager-cache: false
 
       # Installs the pnpm version pinned in package.json ("packageManager").
       # Corepack is updated first: Node's bundled copy can lag behind and fail
