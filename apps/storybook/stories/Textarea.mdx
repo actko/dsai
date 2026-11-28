@@ -1,0 +1,10 @@
+import { Markdown, Meta } from "@storybook/addon-docs/blocks"
+
+import * as TextareaStories from "./Textarea.stories"
+import guidelines from "../../../packages/ui/src/components/Textarea/Textarea.md?raw"
+
+{/* Renders the component's usage doc, so Storybook and the npm package share one source. */}
+
+<Meta of={TextareaStories} name="Guidelines" />
+
+<Markdown>{guidelines}</Markdown>

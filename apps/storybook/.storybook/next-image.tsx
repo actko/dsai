@@ -1,5 +1,5 @@
 /**
- * Stand-in for `next/image`, which only runs inside Next.js. @dsai/ui imports
+ * Stand-in for `next/image`, which only runs inside Next.js. @act-jirayut/dsai imports
  * it (ProductCard), so Storybook maps `next/image` here and renders a plain
  * <img> with the same src/alt/size attributes.
  */

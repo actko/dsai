@@ -1,0 +1,68 @@
+@reference "../../styles/reference.css";
+
+/*
+ * Rules live in the `components` layer so Tailwind utilities passed via
+ * `className` (which live in `utilities`) always win.
+ *
+ * shadcn styles Tabs with `group/tabs` and `group/tabs-list`, which CSS
+ * Modules can't use. Base UI puts `data-orientation` on the root, the list
+ * and every tab, so orientation is matched on the element itself
+ * (`data-horizontal:` / `data-vertical:`), and the list variant through an
+ * ancestor (`in-data-[variant=line]:`).
+ */
+@layer components {
+  /* ---- Root ---------------------------------------------------------- */
+  .root {
+    @apply flex gap-2 data-horizontal:flex-col;
+  }
+
+  /* ---- List ---------------------------------------------------------- */
+  .list {
+    @apply inline-flex w-fit items-center justify-center rounded-4xl p-[3px] text-muted-foreground;
+    @apply data-horizontal:h-9 data-vertical:h-fit data-vertical:flex-col data-vertical:rounded-2xl;
+  }
+
+  .listDefault {
+    @apply bg-muted;
+  }
+
+  /* After `.list` so its square corners win over the vertical rounding. */
+  .listLine {
+    @apply gap-1 rounded-none bg-transparent;
+  }
+
+  /* ---- Trigger (one tab) --------------------------------------------- */
+  .trigger {
+    @apply relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-xl border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap text-foreground/60 transition-all;
+    @apply data-vertical:w-full data-vertical:justify-start data-vertical:px-2.5 data-vertical:py-1.5;
+    @apply hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground;
+    @apply focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring;
+    @apply disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50;
+    @apply has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5;
+    @apply [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4;
+
+    /* Active tab: raised "pill" on the default list */
+    @apply data-active:bg-background data-active:text-foreground;
+    @apply dark:data-active:border-input dark:data-active:bg-input/30 dark:data-active:text-foreground;
+
+    /* Underline indicator, visible only in the line variant (see below) */
+    @apply after:absolute after:bg-foreground after:opacity-0 after:transition-opacity;
+    @apply data-horizontal:after:inset-x-0 data-horizontal:after:bottom-[-5px] data-horizontal:after:h-0.5;
+    @apply data-vertical:after:inset-y-0 data-vertical:after:-right-1 data-vertical:after:w-0.5;
+  }
+
+  /*
+   * Line variant overrides. A separate rule after `.trigger` so they win:
+   * in shadcn they won through `group-*` specificity, here through order.
+   */
+  .trigger {
+    @apply in-data-[variant=line]:bg-transparent in-data-[variant=line]:data-active:bg-transparent;
+    @apply dark:in-data-[variant=line]:data-active:border-transparent dark:in-data-[variant=line]:data-active:bg-transparent;
+    @apply in-data-[variant=line]:data-active:after:opacity-100;
+  }
+
+  /* ---- Content (one panel) ------------------------------------------- */
+  .content {
+    @apply flex-1 text-sm outline-none;
+  }
+}

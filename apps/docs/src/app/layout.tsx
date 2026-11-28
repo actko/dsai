@@ -1,3 +1,4 @@
+import { Toaster } from "@act-jirayut/dsai"
 import type { Metadata } from "next"
 import { DM_Sans, Geist_Mono, Space_Grotesk } from "next/font/google"
 
@@ -22,7 +23,7 @@ const fontMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "DSAI UI",
-  description: "Components from @dsai/ui",
+  description: "Components from @act-jirayut/dsai",
 }
 
 export default function RootLayout({
@@ -37,7 +38,10 @@ export default function RootLayout({
       className={`${fontSans.variable} ${fontHeading.variable} ${fontMono.variable} antialiased`}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )

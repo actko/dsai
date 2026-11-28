@@ -1,0 +1,18 @@
+@reference "../../styles/reference.css";
+
+/*
+ * Rules live in the `components` layer so Tailwind utilities passed via
+ * `className` (which live in `utilities`) always win.
+ */
+@layer components {
+  /*
+   * shadcn also dims the label through `peer-disabled:` (a disabled native
+   * input placed before it). Base UI's Checkbox and Switch aren't native
+   * inputs, so that never matched; it is left out. The `group-data-*` rule
+   * becomes `in-data-*`: an ancestor marked `data-disabled="true"` dims it.
+   */
+  .root {
+    @apply flex items-center gap-2 text-sm leading-none font-medium select-none;
+    @apply in-data-[disabled=true]:pointer-events-none in-data-[disabled=true]:opacity-50;
+  }
+}

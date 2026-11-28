@@ -1,0 +1,10 @@
+import { Markdown, Meta } from "@storybook/addon-docs/blocks"
+
+import * as AlertDialogStories from "./AlertDialog.stories"
+import guidelines from "../../../packages/ui/src/components/AlertDialog/AlertDialog.md?raw"
+
+{/* Renders the component's usage doc, so Storybook and the npm package share one source. */}
+
+<Meta of={AlertDialogStories} name="Guidelines" />
+
+<Markdown>{guidelines}</Markdown>

@@ -1,6 +1,6 @@
-/* Same setup a consumer app uses: the built @dsai/ui, not its source. */
+/* Same setup a consumer app uses: the built @act-jirayut/dsai, not its source. */
 @import "tailwindcss";
-@import "@dsai/ui/styles.css";
+@import "@act-jirayut/dsai/styles.css";
 
 /* Stories use utilities in their own markup. */
 @source "../stories";

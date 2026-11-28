@@ -1,65 +1,153 @@
-# @dsai/ui
+# @act-jirayut/dsai
 
-React components from the DSAI design system: [shadcn/ui](https://ui.shadcn.com) components on [Base UI](https://base-ui.com) primitives, styled for Tailwind CSS v4.
+React components for the DSAI design system: [shadcn/ui](https://ui.shadcn.com) components built on [Base UI](https://base-ui.com) primitives, styled with Tailwind CSS v4 and a shared set of design tokens with light and dark themes.
 
 ## Requirements
 
 - React 19
 - Tailwind CSS v4
-- Next.js 16 (used by `ProductCard` for `next/image`)
+- Next.js 16, only if you use `ProductCard` (it is a separate entry point, so nothing else needs Next.js)
 
 ## Install
 
 ```bash
-pnpm add @dsai/ui
+pnpm add @act-jirayut/dsai
 ```
 
-## Set up styles
+With npm or Yarn: `npm install @act-jirayut/dsai` or `yarn add @act-jirayut/dsai`. React, React DOM and Tailwind CSS are peer dependencies; install them in your app if it doesn't have them yet.
 
-Import the stylesheet right after Tailwind in your global CSS:
+## Set up the stylesheet
+
+Import the stylesheet once, right after Tailwind, in your global CSS (in Next.js, `app/globals.css`):
 
 ```css
 @import "tailwindcss";
-@import "@dsai/ui/styles.css";
+@import "@act-jirayut/dsai/styles.css";
 ```
 
-This adds the design tokens (as Tailwind theme values, so classes like `bg-primary` work in your own code too), the component styles, and the animation utilities.
+This adds:
 
-Dark mode follows a `dark` class on an ancestor element, such as `<html class="dark">`; [`next-themes`](https://github.com/pacocoursey/next-themes) with `attribute="class"` works.
+- **Design tokens** as CSS variables (`--primary`, `--border`, `--radius`, …) and as Tailwind theme values, so classes like `bg-primary` and `text-muted-foreground` work in your own code too.
+- **Component styles**, inside `@layer components`, so Tailwind utilities you pass in `className` always win.
+- **Animations** used by dialogs, popovers and toasts.
 
-## Use
+**Dark mode** follows a `dark` class on an ancestor, usually `<html class="dark">`. [`next-themes`](https://github.com/pacocoursey/next-themes) with `attribute="class"` works.
+
+**Fonts** are yours to choose: set `--font-sans` (body and controls) and `--font-heading` (titles). With `next/font`:
 
 ```tsx
-import { Button } from "@dsai/ui"
+const sans = DM_Sans({ subsets: ["latin"], variable: "--font-sans" })
+const heading = Space_Grotesk({ subsets: ["latin"], variable: "--font-heading" })
 
-export function Actions() {
+<html className={`${sans.variable} ${heading.variable}`}>
+```
+
+**Change the theme** by overriding the token variables after the import:
+
+```css
+:root {
+  --primary: oklch(0.55 0.2 260);
+  --radius: 0.5rem;
+}
+
+.dark {
+  --primary: oklch(0.75 0.15 260);
+}
+```
+
+## Example
+
+A confirmation that deletes a project and confirms it with a toast. Render `<Toaster />` once near the root of your app.
+
+```tsx
+"use client"
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Button,
+  Toaster,
+  toast,
+} from "@act-jirayut/dsai"
+import { useState } from "react"
+
+export function DeleteProject() {
+  const [open, setOpen] = useState(false)
+
   return (
     <>
-      <Button>Save</Button>
-      <Button variant="outline" size="sm">
-        Cancel
-      </Button>
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogTrigger render={<Button variant="destructive" />}>
+          Delete project
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete "Website redesign"?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This permanently deletes the project and its files.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={() => {
+                setOpen(false)
+                toast.success("Project deleted")
+              }}
+            >
+              Delete project
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <Toaster />
     </>
   )
 }
 ```
 
-Pass `className` to adjust a component; your Tailwind utilities take precedence over the component's own styles.
+Components built on Base UI compose with the `render` prop rather than `asChild`, as `AlertDialogTrigger` does above. Pass `className` to adjust any component; your utilities override its defaults.
+
+## Entry points
+
+| Import                           | Contents                                                              |
+| -------------------------------- | --------------------------------------------------------------------- |
+| `@act-jirayut/dsai`              | Every component below except ProductCard                              |
+| `@act-jirayut/dsai/product-card` | `ProductCard`, `ProductCardProps`, `ProductCardImage` (needs Next.js) |
+| `@act-jirayut/dsai/styles.css`   | Tokens, component styles and animations                               |
 
 ## Components
 
-| Component   | Exports                                                                                                                                                        |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Button      | `Button`, `buttonVariants`, `ButtonProps`                                                                                                                      |
-| Card        | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`, `CardProps`, `CardSize`                                       |
-| Dialog      | `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogOverlay`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`, `DialogClose` |
-| ProductCard | `ProductCard`, `ProductCardProps`, `ProductCardImage`                                                                                                          |
+| Component   | Exports                                                                                                                                                                                                                                                                                                                                                       |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AlertDialog | `AlertDialog`, `AlertDialogTrigger`, `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogMedia`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogFooter`, `AlertDialogCancel`, `AlertDialogAction`, `AlertDialogOverlay`, `AlertDialogPortal`, `AlertDialogProps`, `AlertDialogContentProps`, `AlertDialogActionProps`, `AlertDialogCancelProps` |
+| Badge       | `Badge`, `badgeVariants`, `BadgeProps`                                                                                                                                                                                                                                                                                                                        |
+| Button      | `Button`, `buttonVariants`, `ButtonProps`                                                                                                                                                                                                                                                                                                                     |
+| Card        | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`, `CardProps`, `CardSize`                                                                                                                                                                                                                                      |
+| Checkbox    | `Checkbox`, `CheckboxProps`                                                                                                                                                                                                                                                                                                                                   |
+| Dialog      | `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogOverlay`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`, `DialogClose`, `DialogProps`, `DialogContentProps`, `DialogFooterProps`                                                                                                                                      |
+| Input       | `Input`, `InputProps`                                                                                                                                                                                                                                                                                                                                         |
+| Label       | `Label`, `LabelProps`                                                                                                                                                                                                                                                                                                                                         |
+| Popover     | `Popover`, `PopoverTrigger`, `PopoverContent`, `PopoverHeader`, `PopoverTitle`, `PopoverDescription`, `PopoverProps`, `PopoverContentProps`                                                                                                                                                                                                                   |
+| ProductCard | `ProductCard`, `ProductCardProps`, `ProductCardImage` — from `@act-jirayut/dsai/product-card`                                                                                                                                                                                                                                                                 |
+| Switch      | `Switch`, `SwitchProps`                                                                                                                                                                                                                                                                                                                                       |
+| Tabs        | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, `tabsListVariants`, `TabsProps`, `TabsListProps`, `TabsTriggerProps`, `TabsContentProps`                                                                                                                                                                                                                    |
+| Textarea    | `Textarea`, `TextareaProps`                                                                                                                                                                                                                                                                                                                                   |
+| Toaster     | `Toaster`, `ToasterProps`, `toast`                                                                                                                                                                                                                                                                                                                            |
 
-Base UI composes with the `render` prop rather than `asChild`:
+Use `toast` from this package, not from `sonner` directly, so it reaches the same `<Toaster />`.
 
-```tsx
-<DialogTrigger render={<Button variant="outline" />}>Open</DialogTrigger>
-```
+## Component docs
+
+Every component ships a usage guide for designers and AI agents (purpose, when to use and not, props, states, tokens and an example), at `node_modules/@act-jirayut/dsai/src/components/<Component>/<Component>.md`, for example `Button/Button.md`.
 
 ## License
 
