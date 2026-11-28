@@ -1,4 +1,4 @@
-import { Button, Toaster, toast } from "@dsai/ui"
+import { Button, Toaster, toast } from "@act-jirayut/dsai"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { expect, screen, userEvent, waitFor, within } from "storybook/test"
 

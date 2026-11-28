@@ -6,7 +6,9 @@ import { cn } from "cn"
 
 import styles from "./Input.module.css"
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+type InputProps = React.ComponentProps<"input">
+
+function Input({ className, type, ...props }: InputProps) {
   return (
     <InputPrimitive
       type={type}
@@ -17,4 +19,4 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   )
 }
 
-export { Input }
+export { Input, type InputProps }

@@ -8,8 +8,8 @@ Ask the maintainer before deviating from the decisions below, and update this fi
 
 pnpm workspaces + Turborepo monorepo:
 
-- `packages/ui` — **the published npm package `@dsai/ui`**. Everything consumers install lives here.
-- `apps/docs` — Next.js 16 + Tailwind CSS v4 playground that consumes the built `@dsai/ui` (`dist`) as a workspace dependency, set up exactly as an external consumer would be. Never published.
+- `packages/ui` — **the published npm package `@act-jirayut/dsai`**. Everything consumers install lives here.
+- `apps/docs` — Next.js 16 + Tailwind CSS v4 playground that consumes the built `@act-jirayut/dsai` (`dist`) as a workspace dependency, set up exactly as an external consumer would be. Never published.
 - `apps/storybook` — Storybook 10 (React + Vite) for checking each component's props and states, also on the built `dist`. Never published.
 
 # Commands
@@ -18,15 +18,15 @@ pnpm workspaces + Turborepo monorepo:
 pnpm install
 pnpm dev                       # turbo: builds ui, then ui watch build + docs (:3000) + Storybook (:6006)
 pnpm turbo run dev --filter=storybook...   # ui watch + Storybook only (.claude/launch.json "storybook")
-pnpm lint | pnpm typecheck | pnpm build   # turbo across all packages; each first builds @dsai/ui
-pnpm --filter @dsai/ui build   # one package
+pnpm lint | pnpm typecheck | pnpm build   # turbo across all packages; each first builds @act-jirayut/dsai
+pnpm --filter @act-jirayut/dsai build   # one package
 cd packages/ui && pnpm pack --dry-run   # list what would be published
 pnpm format                    # prettier on everything, incl. *.module.css
 ```
 
-`apps/docs` and `apps/storybook` resolve `@dsai/ui` to `packages/ui/dist`, so they need a built `dist` first; the Turbo tasks take care of that. Test runner: none yet. Verify with `lint`, `typecheck`, `build`, the docs app and Storybook.
+`apps/docs` and `apps/storybook` resolve `@act-jirayut/dsai` to `packages/ui/dist`, so they need a built `dist` first; the Turbo tasks take care of that. Test runner: none yet. Verify with `lint`, `typecheck`, `build`, the docs app and Storybook.
 
-**CI** (`.github/workflows/ci.yml`) runs on every pull request into `main` and every push to `main`, on Node 24 with the pnpm pinned in `package.json` (via Corepack): `pnpm install --frozen-lockfile`, `format:check`, `lint`, `typecheck`, `build`, then `node scripts/check-pack.mjs`. That last script fails if the `@dsai/ui` tarball is missing `dist` entry points or a component's `index.d.ts`, ships `.tsx`/`.css` source, or lacks a component's `.md`. Run the same steps locally before opening a PR; a lockfile out of step with `package.json` fails the install step.
+**CI** (`.github/workflows/ci.yml`) runs on every pull request into `main` and every push to `main`, on Node 24 with the pnpm pinned in `package.json` (via Corepack): `pnpm install --frozen-lockfile`, `format:check`, `lint`, `typecheck`, `build`, then `node scripts/check-pack.mjs`. That last script fails if the `@act-jirayut/dsai` tarball is missing `dist` entry points or a component's `index.d.ts`, ships `.tsx`/`.css` source, or lacks a component's `.md`. Run the same steps locally before opening a PR; a lockfile out of step with `package.json` fails the install step.
 
 # Library build (`packages/ui`, Vite library mode)
 
@@ -37,7 +37,8 @@ pnpm format                    # prettier on everything, incl. *.module.css
 - **CSS, two kinds:**
   - `dist/components.css` — all CSS Modules, compiled by Tailwind at build time: hashed class names, `@apply` resolved, still inside `@layer components`. They read the token variables (`var(--primary)`), not literal colors.
   - `dist/styles.css`, `theme.css`, `shadcn.css` — copied/generated as **Tailwind source**, so the consumer's Tailwind v4 compiles the tokens and their apps get `bg-primary` etc. too. `styles.css` imports the other three and has `@source "./**/*.js"` so utilities written in component markup (like `sr-only` in Dialog) are generated.
-- **Consumer requirement:** React 19 + Tailwind CSS v4, with `@import "tailwindcss"; @import "@dsai/ui/styles.css";` in their global CSS. Next.js is needed only because ProductCard uses `next/image`; no `transpilePackages`.
+- **Entry points:** `src/index.ts` → `@act-jirayut/dsai` (everything except ProductCard) and `src/product-card.ts` → `@act-jirayut/dsai/product-card`. ProductCard imports `next/image`, so it lives in its own entry and `next` is an optional peer; keep anything that needs Next.js out of the main entry. A new entry needs a Vite `lib.entry`, an `exports` subpath in `package.json`, and a line in `scripts/check-pack.mjs`.
+- **Consumer requirement:** React 19 + Tailwind CSS v4, with `@import "tailwindcss"; @import "@act-jirayut/dsai/styles.css";` in their global CSS. Next.js only for the `product-card` entry; no `transpilePackages`.
 - `pnpm dev` in `packages/ui` is `vite build --watch` without emptying `dist`, so a running docs server never sees it missing.
 
 # Writing library code (`packages/ui`)
@@ -48,8 +49,8 @@ This code runs inside other people's apps, which changes several shadcn defaults
 - **`"use client"`** at the top of every component that uses state, effects, refs or event handlers, so it works in consumers' React Server Components.
 - **`next`, `react`, `react-dom` and `tailwindcss` are `peerDependencies`**, never `dependencies`.
 - **Theme follows the `dark` class on `<html>`, never a theme library.** shadcn's Sonner reads `next-themes`; the Toaster instead watches the `dark` class and takes an optional `theme` prop, so consumers aren't forced onto `next-themes` (whose provider a second bundled copy wouldn't see anyway).
-- **Re-export the API of stateful dependencies.** When a component listens to module-level state in a dependency (the Toaster and `sonner`'s `toast()`), export that API from `@dsai/ui` too; an app calling its own copy would write to a different store.
-- **Public API is the package entry.** A component is public only once exported from it; renaming or removing an export or prop is a breaking change (semver major).
+- **Re-export the API of stateful dependencies.** When a component listens to module-level state in a dependency (the Toaster and `sonner`'s `toast()`), export that API from `@act-jirayut/dsai` too; an app calling its own copy would write to a different store.
+- **Public API is the package entries.** A component is public only once exported from `src/index.ts` (or `src/product-card.ts`), together with a `<Name>Props` type for each part that takes props; renaming or removing an export or prop is a breaking change (semver major). Ask the maintainer before changing exports.
 
 # Stack specifics that differ from "usual" shadcn
 
@@ -79,7 +80,7 @@ A new component is public once re-exported from `src/index.ts`, documented in it
 **Component docs (`<Component>.md`).** Read the component's `.md` before changing, reviewing or using it to build UI: it is the contract for when to use it, its props, variants and states, and the spec its stories follow. When a change alters any of these, update the `.md` in the same change. Every `.md` follows [`Badge.md`](packages/ui/src/components/Badge/Badge.md), written for designers and AI agents building UI:
 
 1. **Purpose** — one line.
-2. **Import and use** — the same install command and stylesheet setup in every doc, then the `import` from `@dsai/ui` and a minimal usage that follows the doc's own guidance. Type-check new snippets against `@dsai/ui` before committing.
+2. **Import and use** — the same install command and stylesheet setup in every doc, then the `import` from `@act-jirayut/dsai` and a minimal usage that follows the doc's own guidance. Type-check new snippets against `@act-jirayut/dsai` before committing.
 3. **When to use** / **When not to use** — name the component to use instead where there is one.
 4. **Props and variants** — only ones that exist in the `.tsx`, plus states (hover, focus, disabled, invalid…) and fixed sizes.
 5. **Tokens used** — each `theme.css` variable the component's CSS Module reads, what it colors, and its light and dark values.
@@ -105,9 +106,9 @@ Every step lands in the same change; Badge and Tabs are worked examples.
 
 1. **Generate:** `pnpm dlx shadcn@latest add <name>` inside `packages/ui`.
 2. **Restructure** into `src/components/<Name>/` (`.tsx`, `.module.css`, `index.ts`), converting classes as described above, then delete the generated flat file. Keep shadcn's prop names, values and exports.
-3. **Export** from `src/index.ts`, run `pnpm --filter @dsai/ui build`, and check `dist`: the JS keeps `"use client"` where needed and `dist/components.css` has the expected selectors.
+3. **Export** from `src/index.ts`, run `pnpm --filter @act-jirayut/dsai build`, and check `dist`: the JS keeps `"use client"` where needed and `dist/components.css` has the expected selectors.
 4. **Stories:** `apps/storybook/stories/<Name>.stories.tsx` covering every prop value and state. For a compound component (Tabs, Dialog), drive Controls through a small demo wrapper in the stories file (see `TabsDemo`).
-5. **Doc:** `<Name>.md` in the six-section format above. Take the Example from a story, and type-check the "Import and use" snippet against `@dsai/ui`.
+5. **Doc:** `<Name>.md` in the six-section format above. Take the Example from a story, and type-check the "Import and use" snippet against `@act-jirayut/dsai`.
 6. **Guidelines page:** `apps/storybook/stories/<Name>.mdx` rendering the `.md` (copy `Tabs.mdx`).
 7. **Show it:** a section in `apps/docs/src/app/page.tsx`, and a row in the components table of `packages/ui/README.md`.
 8. **Verify:** `pnpm format`, `pnpm lint`, `pnpm typecheck`, `pnpm build`, `pnpm pack --dry-run` in `packages/ui`, then the stories, the Guidelines page and the docs app in light and dark.

@@ -1,4 +1,4 @@
-import { ProductCard } from "@dsai/ui"
+import { ProductCard } from "@act-jirayut/dsai/product-card"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
 const meta = {

@@ -3,7 +3,9 @@ import { cn } from "cn"
 
 import styles from "./Textarea.module.css"
 
-function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
+type TextareaProps = React.ComponentProps<"textarea">
+
+function Textarea({ className, ...props }: TextareaProps) {
   return (
     <textarea
       data-slot="textarea"
@@ -13,4 +15,4 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   )
 }
 
-export { Textarea }
+export { Textarea, type TextareaProps }

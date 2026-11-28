@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@dsai/ui"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@act-jirayut/dsai"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Bell, Lock, User } from "lucide-react"
 import { expect, userEvent, within } from "storybook/test"

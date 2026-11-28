@@ -5,13 +5,12 @@ import { cn } from "cn"
 
 import styles from "./Switch.module.css"
 
-function Switch({
-  className,
-  size = "default",
-  ...props
-}: SwitchPrimitive.Root.Props & {
+type SwitchProps = SwitchPrimitive.Root.Props & {
+  /** `sm` for dense lists and tables */
   size?: "sm" | "default"
-}) {
+}
+
+function Switch({ className, size = "default", ...props }: SwitchProps) {
   return (
     <SwitchPrimitive.Root
       data-slot="switch"
@@ -27,4 +26,4 @@ function Switch({
   )
 }
 
-export { Switch }
+export { Switch, type SwitchProps }

@@ -1,3 +1,5 @@
+// Main entry: @act-jirayut/dsai. ProductCard needs Next.js, so it lives in
+// its own entry (src/product-card.ts → @act-jirayut/dsai/product-card).
 export * from "./components/AlertDialog"
 export * from "./components/Badge"
 export * from "./components/Button"
@@ -7,7 +9,6 @@ export * from "./components/Dialog"
 export * from "./components/Input"
 export * from "./components/Label"
 export * from "./components/Popover"
-export * from "./components/ProductCard"
 export * from "./components/Switch"
 export * from "./components/Tabs"
 export * from "./components/Textarea"

@@ -24,7 +24,6 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-  ProductCard,
   Switch,
   Tabs,
   TabsContent,
@@ -32,8 +31,11 @@ import {
   TabsTrigger,
   Textarea,
   type ButtonProps,
+} from "@act-jirayut/dsai"
+import {
+  ProductCard,
   type ProductCardProps,
-} from "@dsai/ui"
+} from "@act-jirayut/dsai/product-card"
 import { ArrowRight, Plus } from "lucide-react"
 
 import { DialogDemo } from "@/components/dialog-demo"
@@ -78,7 +80,9 @@ export default function Home() {
   return (
     <main className="mx-auto flex max-w-4xl flex-col gap-12 px-4 py-16">
       <header className="flex flex-col gap-2">
-        <h1 className="font-heading text-3xl font-semibold">@dsai/ui</h1>
+        <h1 className="font-heading text-3xl font-semibold">
+          @act-jirayut/dsai
+        </h1>
         <p className="text-muted-foreground">
           Component playground. Press <kbd>d</kbd> to toggle dark mode.
         </p>

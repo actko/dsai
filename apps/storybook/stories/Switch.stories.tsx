@@ -1,4 +1,4 @@
-import { Label, Switch } from "@dsai/ui"
+import { Label, Switch } from "@act-jirayut/dsai"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { expect, userEvent, within } from "storybook/test"
 

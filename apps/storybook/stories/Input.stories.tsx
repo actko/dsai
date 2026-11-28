@@ -1,4 +1,4 @@
-import { Input, Label } from "@dsai/ui"
+import { Input, Label } from "@act-jirayut/dsai"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
 const meta = {

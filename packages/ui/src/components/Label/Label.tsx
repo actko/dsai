@@ -3,7 +3,9 @@ import { cn } from "cn"
 
 import styles from "./Label.module.css"
 
-function Label({ className, ...props }: React.ComponentProps<"label">) {
+type LabelProps = React.ComponentProps<"label">
+
+function Label({ className, ...props }: LabelProps) {
   return (
     <label
       data-slot="label"
@@ -13,4 +15,4 @@ function Label({ className, ...props }: React.ComponentProps<"label">) {
   )
 }
 
-export { Label }
+export { Label, type LabelProps }

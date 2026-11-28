@@ -23,7 +23,7 @@
     "typecheck": {
       "dependsOn": ["^build"]
     },
-    "@dsai/ui#dev": {
+    "@act-jirayut/dsai#dev": {
       "cache": false,
       "persistent": true,
       "dependsOn": ["build"]

@@ -1,4 +1,4 @@
-import { Checkbox, Input, Label, Switch } from "@dsai/ui"
+import { Checkbox, Input, Label, Switch } from "@act-jirayut/dsai"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
 const meta = {

@@ -11,4 +11,8 @@ export {
   AlertDialogPortal,
   AlertDialogTitle,
   AlertDialogTrigger,
+  type AlertDialogProps,
+  type AlertDialogContentProps,
+  type AlertDialogActionProps,
+  type AlertDialogCancelProps,
 } from "./AlertDialog"

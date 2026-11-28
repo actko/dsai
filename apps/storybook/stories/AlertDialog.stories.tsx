@@ -10,7 +10,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
-} from "@dsai/ui"
+} from "@act-jirayut/dsai"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Trash2 } from "lucide-react"
 import { expect, screen, userEvent, waitFor, within } from "storybook/test"

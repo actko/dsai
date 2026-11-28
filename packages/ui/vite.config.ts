@@ -35,7 +35,7 @@ function preserveUseClient(): Plugin {
 }
 
 /**
- * Writes the public stylesheet (`@dsai/ui/styles.css`) and the token files it
+ * Writes the public stylesheet (`@act-jirayut/dsai/styles.css`) and the token files it
  * imports. These stay Tailwind source: the consumer's Tailwind v4 compiles
  * them, so `bg-primary` etc. work in consumer code too.
  */
@@ -55,9 +55,9 @@ function publicStyles(): Plugin {
         type: "asset",
         fileName: "styles.css",
         source: [
-          "/* @dsai/ui public stylesheet. Import right after Tailwind:",
+          "/* @act-jirayut/dsai public stylesheet. Import right after Tailwind:",
           ' *   @import "tailwindcss";',
-          ' *   @import "@dsai/ui/styles.css";',
+          ' *   @import "@act-jirayut/dsai/styles.css";',
           " */",
           '@import "tw-animate-css";',
           '@import "./shadcn.css";',
@@ -77,7 +77,11 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), preserveUseClient(), publicStyles()],
   build: {
     lib: {
-      entry: resolve(import.meta.dirname, "src/index.ts"),
+      entry: {
+        index: resolve(import.meta.dirname, "src/index.ts"),
+        // Needs Next.js (next/image), so it isn't part of the main entry.
+        "product-card": resolve(import.meta.dirname, "src/product-card.ts"),
+      },
       formats: ["es"],
       // Compiled CSS Modules of every component, in one file.
       cssFileName: "components",

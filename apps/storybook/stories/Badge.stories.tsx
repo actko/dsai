@@ -1,4 +1,4 @@
-import { Badge, badgeVariants } from "@dsai/ui"
+import { Badge, badgeVariants } from "@act-jirayut/dsai"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ArrowRight, Check, X } from "lucide-react"
 

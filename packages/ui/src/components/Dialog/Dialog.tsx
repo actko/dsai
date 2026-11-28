@@ -10,7 +10,19 @@ import { Button } from "../Button"
 
 import styles from "./Dialog.module.css"
 
-function Dialog({ ...props }: DialogPrimitive.Root.Props) {
+type DialogProps = DialogPrimitive.Root.Props
+
+type DialogContentProps = DialogPrimitive.Popup.Props & {
+  /** Show the "×" close button in the top-right corner */
+  showCloseButton?: boolean
+}
+
+type DialogFooterProps = React.ComponentProps<"div"> & {
+  /** Add an outline "Close" button after the footer's children */
+  showCloseButton?: boolean
+}
+
+function Dialog({ ...props }: DialogProps) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />
 }
 
@@ -44,9 +56,7 @@ function DialogContent({
   children,
   showCloseButton = true,
   ...props
-}: DialogPrimitive.Popup.Props & {
-  showCloseButton?: boolean
-}) {
+}: DialogContentProps) {
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -87,9 +97,7 @@ function DialogFooter({
   showCloseButton = false,
   children,
   ...props
-}: React.ComponentProps<"div"> & {
-  showCloseButton?: boolean
-}) {
+}: DialogFooterProps) {
   return (
     <div
       data-slot="dialog-footer"
@@ -140,4 +148,7 @@ export {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
+  type DialogProps,
+  type DialogContentProps,
+  type DialogFooterProps,
 }

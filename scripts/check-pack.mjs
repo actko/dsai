@@ -1,4 +1,4 @@
-// Fails if the @dsai/ui tarball is missing what consumers need, or ships source.
+// Fails if the @act-jirayut/dsai tarball is missing what consumers need, or ships source.
 // Run after `pnpm build`. Used by CI (.github/workflows/ci.yml).
 import { execFileSync } from "node:child_process"
 import { readdirSync } from "node:fs"
@@ -29,6 +29,8 @@ const required = [
   "LICENSE",
   "dist/index.js",
   "dist/index.d.ts",
+  "dist/product-card.js",
+  "dist/product-card.d.ts",
   "dist/styles.css",
   "dist/components.css",
   "dist/theme.css",
@@ -65,5 +67,5 @@ if (problems.length) {
   process.exit(1)
 }
 console.log(
-  `@dsai/ui package OK: ${files.size} files, ${components.length} components.`
+  `@act-jirayut/dsai package OK: ${files.size} files, ${components.length} components.`
 )

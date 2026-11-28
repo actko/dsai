@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, toast } from "@dsai/ui"
+import { Button, toast } from "@act-jirayut/dsai"
 
 export function ToastDemo() {
   return (

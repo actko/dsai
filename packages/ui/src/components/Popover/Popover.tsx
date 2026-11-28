@@ -6,7 +6,15 @@ import { cn } from "cn"
 
 import styles from "./Popover.module.css"
 
-function Popover({ ...props }: PopoverPrimitive.Root.Props) {
+type PopoverProps = PopoverPrimitive.Root.Props
+
+type PopoverContentProps = PopoverPrimitive.Popup.Props &
+  Pick<
+    PopoverPrimitive.Positioner.Props,
+    "align" | "alignOffset" | "side" | "sideOffset"
+  >
+
+function Popover({ ...props }: PopoverProps) {
   return <PopoverPrimitive.Root data-slot="popover" {...props} />
 }
 
@@ -21,11 +29,7 @@ function PopoverContent({
   side = "bottom",
   sideOffset = 4,
   ...props
-}: PopoverPrimitive.Popup.Props &
-  Pick<
-    PopoverPrimitive.Positioner.Props,
-    "align" | "alignOffset" | "side" | "sideOffset"
-  >) {
+}: PopoverContentProps) {
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Positioner
@@ -85,4 +89,6 @@ export {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
+  type PopoverProps,
+  type PopoverContentProps,
 }

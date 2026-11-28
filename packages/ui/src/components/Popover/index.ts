@@ -5,4 +5,6 @@ export {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
+  type PopoverProps,
+  type PopoverContentProps,
 } from "./Popover"

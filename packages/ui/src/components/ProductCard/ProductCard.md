@@ -6,23 +6,23 @@ Shows one product in a store listing: its image, brand, name and price.
 
 ## Import and use
 
-Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@dsai/ui` is not published to npm yet; inside this repo it is a workspace dependency):
+Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@act-jirayut/dsai` is not published to npm yet; inside this repo it is a workspace dependency):
 
 ```bash
-pnpm add @dsai/ui
+pnpm add @act-jirayut/dsai
 ```
 
 Once per app, import the stylesheet right after Tailwind in your global CSS:
 
 ```css
 @import "tailwindcss";
-@import "@dsai/ui/styles.css";
+@import "@act-jirayut/dsai/styles.css";
 ```
 
-ProductCard uses Next.js's image component, so it needs a Next.js app. Then import the component:
+ProductCard uses Next.js's image component, so it needs a Next.js app, and it has its own entry point so the rest of the library doesn't. Import it from `@act-jirayut/dsai/product-card`:
 
 ```tsx
-import { ProductCard } from "@dsai/ui"
+import { ProductCard } from "@act-jirayut/dsai/product-card"
 
 ;<ProductCard
   image={{ src: "/products/sneaker.svg", alt: "White low-top sneaker" }}
@@ -42,7 +42,7 @@ import { ProductCard } from "@dsai/ui"
 - **Anything that isn't a product for sale.** Use Card.
 - **Showing details like stock, ratings, sizes or a sale price.** ProductCard has no slots for these. TODO: decide whether to add badges, ratings or a compare-at price.
 - **Adding to cart from the card.** It has no button or action slot. TODO: decide whether ProductCard should link to the product page or hold an action.
-- **Apps that aren't built with Next.js.** TODO: ProductCard depends on Next.js's image component; a framework-neutral version doesn't exist.
+- **Apps that aren't built with Next.js.** ProductCard depends on Next.js's image component. Every other component works without Next.js. TODO: decide whether a framework-neutral ProductCard is needed.
 
 ## Props and variants
 

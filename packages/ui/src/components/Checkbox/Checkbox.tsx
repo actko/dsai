@@ -6,7 +6,9 @@ import { CheckIcon } from "lucide-react"
 
 import styles from "./Checkbox.module.css"
 
-function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
+type CheckboxProps = CheckboxPrimitive.Root.Props
+
+function Checkbox({ className, ...props }: CheckboxProps) {
   return (
     <CheckboxPrimitive.Root
       data-slot="checkbox"
@@ -23,4 +25,4 @@ function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
   )
 }
 
-export { Checkbox }
+export { Checkbox, type CheckboxProps }

@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@dsai/ui"
+import { Button, buttonVariants } from "@act-jirayut/dsai"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ArrowRight, Download, Plus, Trash2 } from "lucide-react"
 import { expect, userEvent, within } from "storybook/test"

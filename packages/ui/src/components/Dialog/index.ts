@@ -9,4 +9,7 @@ export {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
+  type DialogProps,
+  type DialogContentProps,
+  type DialogFooterProps,
 } from "./Dialog"

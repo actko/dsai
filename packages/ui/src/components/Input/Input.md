@@ -6,23 +6,23 @@ A single-line text field for short answers: a name, an email, a search term, a n
 
 ## Import and use
 
-Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@dsai/ui` is not published to npm yet; inside this repo it is a workspace dependency):
+Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@act-jirayut/dsai` is not published to npm yet; inside this repo it is a workspace dependency):
 
 ```bash
-pnpm add @dsai/ui
+pnpm add @act-jirayut/dsai
 ```
 
 Once per app, import the stylesheet right after Tailwind in your global CSS:
 
 ```css
 @import "tailwindcss";
-@import "@dsai/ui/styles.css";
+@import "@act-jirayut/dsai/styles.css";
 ```
 
 Then import the component, and give it a visible Label:
 
 ```tsx
-import { Input, Label } from "@dsai/ui"
+import { Input, Label } from "@act-jirayut/dsai"
 
 <Label htmlFor="email">Email</Label>
 <Input id="email" type="email" placeholder="you@example.com" />

@@ -59,7 +59,7 @@ jobs:
       - name: Format
         run: pnpm format:check
 
-      # Each Turbo task builds @dsai/ui first (docs and Storybook use its dist).
+      # Each Turbo task builds @act-jirayut/dsai first (docs and Storybook use its dist).
       - name: Lint
         run: pnpm lint
 

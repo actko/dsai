@@ -6,23 +6,23 @@ A multi-line text field for longer free-form answers, such as comments, feedback
 
 ## Import and use
 
-Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@dsai/ui` is not published to npm yet; inside this repo it is a workspace dependency):
+Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@act-jirayut/dsai` is not published to npm yet; inside this repo it is a workspace dependency):
 
 ```bash
-pnpm add @dsai/ui
+pnpm add @act-jirayut/dsai
 ```
 
 Once per app, import the stylesheet right after Tailwind in your global CSS:
 
 ```css
 @import "tailwindcss";
-@import "@dsai/ui/styles.css";
+@import "@act-jirayut/dsai/styles.css";
 ```
 
 Then import the component, and give it a visible Label:
 
 ```tsx
-import { Label, Textarea } from "@dsai/ui"
+import { Label, Textarea } from "@act-jirayut/dsai"
 
 <Label htmlFor="feedback">Feedback</Label>
 <Textarea id="feedback" placeholder="Tell us what happened…" />

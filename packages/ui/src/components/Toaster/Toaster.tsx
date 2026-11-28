@@ -13,7 +13,7 @@ import { Toaster as Sonner, type ToasterProps } from "sonner"
 import styles from "./Toaster.module.css"
 
 /**
- * Follows the `dark` class on <html>, which is how every @dsai/ui component
+ * Follows the `dark` class on <html>, which is how every @act-jirayut/dsai component
  * switches theme. (shadcn reads next-themes here; a library can't assume it.)
  */
 function useDocumentTheme(): "light" | "dark" | undefined {

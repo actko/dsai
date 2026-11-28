@@ -6,17 +6,17 @@ A small floating panel anchored to a trigger, for extra details or a few quick c
 
 ## Import and use
 
-Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@dsai/ui` is not published to npm yet; inside this repo it is a workspace dependency):
+Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@act-jirayut/dsai` is not published to npm yet; inside this repo it is a workspace dependency):
 
 ```bash
-pnpm add @dsai/ui
+pnpm add @act-jirayut/dsai
 ```
 
 Once per app, import the stylesheet right after Tailwind in your global CSS:
 
 ```css
 @import "tailwindcss";
-@import "@dsai/ui/styles.css";
+@import "@act-jirayut/dsai/styles.css";
 ```
 
 Then import the parts and compose them; the trigger is usually a Button:
@@ -30,7 +30,7 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "@dsai/ui"
+} from "@act-jirayut/dsai"
 
 ;<Popover>
   <PopoverTrigger render={<Button variant="outline" />}>

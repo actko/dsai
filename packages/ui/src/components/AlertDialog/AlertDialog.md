@@ -6,17 +6,17 @@ An interrupting window that asks the user to confirm or cancel a serious action,
 
 ## Import and use
 
-Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@dsai/ui` is not published to npm yet; inside this repo it is a workspace dependency):
+Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@act-jirayut/dsai` is not published to npm yet; inside this repo it is a workspace dependency):
 
 ```bash
-pnpm add @dsai/ui
+pnpm add @act-jirayut/dsai
 ```
 
 Once per app, import the stylesheet right after Tailwind in your global CSS:
 
 ```css
 @import "tailwindcss";
-@import "@dsai/ui/styles.css";
+@import "@act-jirayut/dsai/styles.css";
 ```
 
 Then import the parts and compose them. Put Cancel first and the action last, and label the action with what it does:
@@ -33,7 +33,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
-} from "@dsai/ui"
+} from "@act-jirayut/dsai"
 
 ;<AlertDialog>
   <AlertDialogTrigger render={<Button variant="destructive" />}>

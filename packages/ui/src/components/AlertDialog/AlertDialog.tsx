@@ -8,7 +8,19 @@ import { Button } from "../Button"
 
 import styles from "./AlertDialog.module.css"
 
-function AlertDialog({ ...props }: AlertDialogPrimitive.Root.Props) {
+type AlertDialogProps = AlertDialogPrimitive.Root.Props
+
+type AlertDialogContentProps = AlertDialogPrimitive.Popup.Props & {
+  /** `sm`: narrow, always centered, actions in two equal columns */
+  size?: "default" | "sm"
+}
+
+type AlertDialogActionProps = React.ComponentProps<typeof Button>
+
+type AlertDialogCancelProps = AlertDialogPrimitive.Close.Props &
+  Pick<React.ComponentProps<typeof Button>, "variant" | "size">
+
+function AlertDialog({ ...props }: AlertDialogProps) {
   return <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props} />
 }
 
@@ -41,9 +53,7 @@ function AlertDialogContent({
   className,
   size = "default",
   ...props
-}: AlertDialogPrimitive.Popup.Props & {
-  size?: "default" | "sm"
-}) {
+}: AlertDialogContentProps) {
   return (
     <AlertDialogPortal>
       <AlertDialogOverlay />
@@ -122,10 +132,7 @@ function AlertDialogDescription({
   )
 }
 
-function AlertDialogAction({
-  className,
-  ...props
-}: React.ComponentProps<typeof Button>) {
+function AlertDialogAction({ className, ...props }: AlertDialogActionProps) {
   return (
     <Button
       data-slot="alert-dialog-action"
@@ -140,8 +147,7 @@ function AlertDialogCancel({
   variant = "outline",
   size = "default",
   ...props
-}: AlertDialogPrimitive.Close.Props &
-  Pick<React.ComponentProps<typeof Button>, "variant" | "size">) {
+}: AlertDialogCancelProps) {
   return (
     <AlertDialogPrimitive.Close
       data-slot="alert-dialog-cancel"
@@ -165,4 +171,8 @@ export {
   AlertDialogPortal,
   AlertDialogTitle,
   AlertDialogTrigger,
+  type AlertDialogProps,
+  type AlertDialogContentProps,
+  type AlertDialogActionProps,
+  type AlertDialogCancelProps,
 }

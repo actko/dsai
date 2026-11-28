@@ -31,7 +31,7 @@ const config: StorybookConfig = {
   staticDirs: ["../public"],
   viteFinal: (config) => ({
     ...config,
-    // Compiles preview.css (Tailwind + @dsai/ui/styles.css) like a consumer app.
+    // Compiles preview.css (Tailwind + @act-jirayut/dsai/styles.css) like a consumer app.
     plugins: [...(config.plugins ?? []), tailwindcss()],
     resolve: {
       ...config.resolve,

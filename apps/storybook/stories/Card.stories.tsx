@@ -7,7 +7,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@dsai/ui"
+} from "@act-jirayut/dsai"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
 const meta = {

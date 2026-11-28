@@ -6,17 +6,17 @@ A modal window over the page that holds a short, focused task or decision the us
 
 ## Import and use
 
-Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@dsai/ui` is not published to npm yet; inside this repo it is a workspace dependency):
+Requires React 19 and Tailwind CSS v4. Install the package (TODO: `@act-jirayut/dsai` is not published to npm yet; inside this repo it is a workspace dependency):
 
 ```bash
-pnpm add @dsai/ui
+pnpm add @act-jirayut/dsai
 ```
 
 Once per app, import the stylesheet right after Tailwind in your global CSS:
 
 ```css
 @import "tailwindcss";
-@import "@dsai/ui/styles.css";
+@import "@act-jirayut/dsai/styles.css";
 ```
 
 Then import the parts you need and compose them. The trigger and every action are Buttons:
@@ -32,7 +32,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@dsai/ui"
+} from "@act-jirayut/dsai"
 
 ;<Dialog>
   <DialogTrigger render={<Button variant="outline" />}>Rename</DialogTrigger>
@@ -66,7 +66,7 @@ import {
 - **Small contextual details or controls** anchored to an element. Use a popover. TODO: no Popover component exists yet.
 - **Confirming common actions that can be undone.** Offer undo instead.
 - **Opening a dialog from another dialog.** Close the first, or move the flow to a page.
-- **Destructive confirmations that must not be dismissed by accident.** These call for an alert dialog. TODO: `@dsai/ui` has no AlertDialog yet; until it exists, turn off outside-click dismissal on Dialog for these (see below).
+- **Destructive confirmations that must not be dismissed by accident.** These call for an alert dialog. TODO: `@act-jirayut/dsai` has no AlertDialog yet; until it exists, turn off outside-click dismissal on Dialog for these (see below).
 
 ## Props and variants
 

@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@dsai/ui"
+} from "@act-jirayut/dsai"
 
 export function DialogDemo() {
   return (

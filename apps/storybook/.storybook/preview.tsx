@@ -3,7 +3,7 @@ import { useEffect } from "react"
 
 import "./preview.css"
 
-/** Toggles the `dark` class on <html>, which is how @dsai/ui switches theme. */
+/** Toggles the `dark` class on <html>, which is how @act-jirayut/dsai switches theme. */
 const withTheme: Decorator = (Story, context) => {
   const theme = context.globals.theme as "light" | "dark"
   useEffect(() => {

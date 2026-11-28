@@ -1,4 +1,4 @@
-import { Checkbox, Label } from "@dsai/ui"
+import { Checkbox, Label } from "@act-jirayut/dsai"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { expect, userEvent, within } from "storybook/test"
 

@@ -1,4 +1,4 @@
-import { Label, Textarea } from "@dsai/ui"
+import { Label, Textarea } from "@act-jirayut/dsai"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
 const meta = {
