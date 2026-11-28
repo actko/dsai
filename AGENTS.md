@@ -26,6 +26,8 @@ pnpm format                    # prettier on everything, incl. *.module.css
 
 `apps/docs` and `apps/storybook` resolve `@dsai/ui` to `packages/ui/dist`, so they need a built `dist` first; the Turbo tasks take care of that. Test runner: none yet. Verify with `lint`, `typecheck`, `build`, the docs app and Storybook.
 
+**CI** (`.github/workflows/ci.yml`) runs on every pull request into `main` and every push to `main`, on Node 24 with the pnpm pinned in `package.json` (via Corepack): `pnpm install --frozen-lockfile`, `format:check`, `lint`, `typecheck`, `build`, then `node scripts/check-pack.mjs`. That last script fails if the `@dsai/ui` tarball is missing `dist` entry points or a component's `index.d.ts`, ships `.tsx`/`.css` source, or lacks a component's `.md`. Run the same steps locally before opening a PR; a lockfile out of step with `package.json` fails the install step.
+
 # Library build (`packages/ui`, Vite library mode)
 
 `vite build && tsc -p tsconfig.build.json` produces `dist/`, which is all that ships (plus the component docs, `src/components/**/*.md`). Config is in `packages/ui/vite.config.ts`:
@@ -45,6 +47,8 @@ This code runs inside other people's apps, which changes several shadcn defaults
 - **Relative imports only.** Path aliases like `@/components/...` are not part of the published output, so keep source portable with relative imports. The `@/` alias exists only so the shadcn CLI can resolve paths; ESLint rejects it in code.
 - **`"use client"`** at the top of every component that uses state, effects, refs or event handlers, so it works in consumers' React Server Components.
 - **`next`, `react`, `react-dom` and `tailwindcss` are `peerDependencies`**, never `dependencies`.
+- **Theme follows the `dark` class on `<html>`, never a theme library.** shadcn's Sonner reads `next-themes`; the Toaster instead watches the `dark` class and takes an optional `theme` prop, so consumers aren't forced onto `next-themes` (whose provider a second bundled copy wouldn't see anyway).
+- **Re-export the API of stateful dependencies.** When a component listens to module-level state in a dependency (the Toaster and `sonner`'s `toast()`), export that API from `@dsai/ui` too; an app calling its own copy would write to a different store.
 - **Public API is the package entry.** A component is public only once exported from it; renaming or removing an export or prop is a breaking change (semver major).
 
 # Stack specifics that differ from "usual" shadcn
@@ -90,7 +94,10 @@ Outside "Import and use", leave out implementation details: exports, data attrib
   - **State the element carries itself:** Base UI repeats attributes such as `data-orientation` on every part, so `group-data-vertical/tabs:` becomes plain `data-vertical:`. Check the part's `*DataAttributes.d.ts` in `@base-ui/react` first.
   - **State only an ancestor carries:** `group-data-[variant=line]/tabs-list:` becomes `in-data-[variant=line]:` (or `has-*` for descendants).
   - **Overrides that won through `group-*` specificity:** the converted selectors have lower specificity, so move them into a second rule for the same class placed after the first; later rules win inside `@layer components`. Inspect `dist/components.css` to confirm the order.
-- **`shadcn add`** (run `pnpm dlx shadcn@latest add <name>` inside `packages/ui`) writes a flat lowercase file with inline classes and alias imports. Move each new component into this structure, convert its classes to the module, and switch to relative imports before using it. Also check what the generated file gets wrong for a library: it may skip `"use client"` where a Base UI hook needs it (Badge's `useRender`), or swallow a prop Base UI needs (shadcn's Tabs set `data-orientation` but never passed `orientation` to the root).
+  - **Ancestor attributes other components also use** (`data-size`, `data-variant` values like `default`): scope the ancestor to its slot, e.g. `in-[[data-slot=switch][data-size=sm]]:`, or a Card's `data-size` higher up would match too (see `Switch.module.css`, `AlertDialog.module.css`).
+  - **Selectors for components we don't have** (shadcn's `group-*/field`, `peer-*` against a native input): drop them and say why in a comment, rather than inventing the missing piece.
+  - **Never write `*/` inside a CSS comment** (e.g. quoting `group-has-*/field`); it ends the comment and breaks the build.
+- **`shadcn add`** (run `pnpm dlx shadcn@latest add <name>` inside `packages/ui`) writes a flat lowercase file with inline classes and alias imports. Move each new component into this structure, convert its classes to the module, and switch to relative imports before using it. Also check what the generated file gets wrong for a library: it may skip `"use client"` where a Base UI hook needs it (Badge's `useRender`), or swallow a prop Base UI needs (shadcn's Tabs set `data-orientation` but never passed `orientation` to the root). It may also write flat copies of components it depends on (e.g. `button.tsx` for AlertDialog): delete them and import our folder version (`../Button`). It installs npm dependencies with `pnpm`, so `pnpm` must be on `PATH`; review what it adds to `package.json` against the rules above.
 
 # Adding a component
 
@@ -124,6 +131,7 @@ Every component with a `.md` also gets `stories/<Component>.mdx`, a **Guidelines
 - **Attribute states** (`disabled`, `aria-invalid`, `aria-expanded`): set them as props in a story.
 - **Theme:** the toolbar's Theme switch toggles `.dark` on `<html>`; check stories in both.
 - **Setup quirks:** `.storybook/preview.css` mirrors a consumer's global CSS and defines `--font-sans`/`--font-heading` (fonts load in `preview-head.html`). `next/image` is aliased to `.storybook/next-image.tsx`, a plain `<img>`, because it only runs inside Next.js. The a11y panel reports violations without failing (`a11y.test: "todo"`).
+- **Overlays** (Dialog, AlertDialog, Popover, Toaster) render outside the story canvas, so `play` functions query them with `screen`, not `within(canvasElement)`; give overlay demos a `defaultOpen` arg so their layout can be reviewed without clicking. They mount at opacity 0 and animate in, so assert visibility with `await waitFor(() => expect(el).toBeVisible())`; a bare `expect(await screen.findBy…()).toBeVisible()` fails intermittently.
 
 # Code style
 

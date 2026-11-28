@@ -27,6 +27,8 @@ const config: StorybookConfig = {
     getAbsolutePath("storybook-addon-pseudo-states"),
   ],
   framework: getAbsolutePath("@storybook/react-vite"),
+  // Product images used by ProductCard stories (same files as apps/docs/public).
+  staticDirs: ["../public"],
   viteFinal: (config) => ({
     ...config,
     // Compiles preview.css (Tailwind + @dsai/ui/styles.css) like a consumer app.
