@@ -48,14 +48,22 @@ Pass `className` to adjust a component; your Tailwind utilities take precedence 
 
 ## Components
 
-| Component   | Exports                                                                                                                                                        |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Badge       | `Badge`, `badgeVariants`, `BadgeProps`                                                                                                                         |
-| Button      | `Button`, `buttonVariants`, `ButtonProps`                                                                                                                      |
-| Card        | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`, `CardProps`, `CardSize`                                       |
-| Dialog      | `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogOverlay`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`, `DialogClose` |
-| ProductCard | `ProductCard`, `ProductCardProps`, `ProductCardImage`                                                                                                          |
-| Tabs        | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, `tabsListVariants`                                                                                           |
+| Component   | Exports                                                                                                                                                                                                                                                    |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AlertDialog | `AlertDialog`, `AlertDialogTrigger`, `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogMedia`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogFooter`, `AlertDialogCancel`, `AlertDialogAction`, `AlertDialogOverlay`, `AlertDialogPortal` |
+| Badge       | `Badge`, `badgeVariants`, `BadgeProps`                                                                                                                                                                                                                     |
+| Button      | `Button`, `buttonVariants`, `ButtonProps`                                                                                                                                                                                                                  |
+| Card        | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`, `CardProps`, `CardSize`                                                                                                                                   |
+| Checkbox    | `Checkbox`                                                                                                                                                                                                                                                 |
+| Dialog      | `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogOverlay`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`, `DialogClose`                                                                                             |
+| Input       | `Input`                                                                                                                                                                                                                                                    |
+| Label       | `Label`                                                                                                                                                                                                                                                    |
+| Popover     | `Popover`, `PopoverTrigger`, `PopoverContent`, `PopoverHeader`, `PopoverTitle`, `PopoverDescription`                                                                                                                                                       |
+| ProductCard | `ProductCard`, `ProductCardProps`, `ProductCardImage`                                                                                                                                                                                                      |
+| Switch      | `Switch`                                                                                                                                                                                                                                                   |
+| Tabs        | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, `tabsListVariants`                                                                                                                                                                                       |
+| Textarea    | `Textarea`                                                                                                                                                                                                                                                 |
+| Toaster     | `Toaster`, `ToasterProps`, `toast`                                                                                                                                                                                                                         |
 
 Base UI composes with the `render` prop rather than `asChild`:
 

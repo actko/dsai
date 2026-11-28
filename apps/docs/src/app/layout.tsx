@@ -1,3 +1,4 @@
+import { Toaster } from "@dsai/ui"
 import type { Metadata } from "next"
 import { DM_Sans, Geist_Mono, Space_Grotesk } from "next/font/google"
 
@@ -37,7 +38,10 @@ export default function RootLayout({
       className={`${fontSans.variable} ${fontHeading.variable} ${fontMono.variable} antialiased`}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )

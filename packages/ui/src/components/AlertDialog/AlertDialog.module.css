@@ -1,0 +1,61 @@
+@reference "../../styles/reference.css";
+
+/*
+ * Rules live in the `components` layer so Tailwind utilities passed via
+ * `className` (which live in `utilities`) always win.
+ */
+@layer components {
+  /* ---- Backdrop ------------------------------------------------------ */
+  .overlay {
+    @apply fixed inset-0 isolate z-50 bg-black/80 duration-100 supports-backdrop-filter:backdrop-blur-xs;
+    @apply data-open:animate-in data-open:fade-in-0;
+    @apply data-closed:animate-out data-closed:fade-out-0;
+  }
+
+  /* ---- Popup --------------------------------------------------------- */
+  .content {
+    @apply fixed top-1/2 left-1/2 z-50 grid w-full -translate-x-1/2 -translate-y-1/2 gap-6 rounded-4xl bg-popover p-6 text-popover-foreground ring-1 ring-foreground/5 duration-100 outline-none;
+    @apply data-[size=default]:max-w-xs data-[size=sm]:max-w-xs data-[size=default]:sm:max-w-md;
+    @apply data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95;
+    @apply data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95;
+  }
+
+  /*
+   * shadcn sizes the inner parts with `group/alert-dialog-content`. Here they
+   * match their popup through `in-[[data-slot=alert-dialog-content]…]`, scoped
+   * to that slot so other components' `data-size` can't match.
+   * Default size from the `sm` breakpoint up: left-aligned, and the media
+   * (icon) sits in a column beside the title and description.
+   */
+
+  /* ---- Header -------------------------------------------------------- */
+  .header {
+    @apply grid grid-rows-[auto_1fr] place-items-center gap-1.5 text-center;
+    @apply has-data-[slot=alert-dialog-media]:grid-rows-[auto_auto_1fr] has-data-[slot=alert-dialog-media]:gap-x-6;
+    @apply sm:in-[[data-slot=alert-dialog-content][data-size=default]]:place-items-start sm:in-[[data-slot=alert-dialog-content][data-size=default]]:text-left;
+    @apply sm:in-[[data-slot=alert-dialog-content][data-size=default]]:has-data-[slot=alert-dialog-media]:grid-rows-[auto_1fr];
+  }
+
+  /* ---- Footer: stacked on mobile, a row from `sm` up; two equal columns at size `sm` */
+  .footer {
+    @apply flex flex-col-reverse gap-2 sm:flex-row sm:justify-end;
+    @apply in-[[data-slot=alert-dialog-content][data-size=sm]]:grid in-[[data-slot=alert-dialog-content][data-size=sm]]:grid-cols-2;
+  }
+
+  /* ---- Media (icon or illustration) ---------------------------------- */
+  .media {
+    @apply mb-2 inline-flex size-16 items-center justify-center rounded-full bg-muted *:[svg:not([class*='size-'])]:size-8;
+    @apply sm:in-[[data-slot=alert-dialog-content][data-size=default]]:row-span-2;
+  }
+
+  /* ---- Text ---------------------------------------------------------- */
+  .title {
+    @apply font-heading text-lg font-medium;
+    @apply sm:in-[[data-slot=alert-dialog-content][data-size=default]:has([data-slot=alert-dialog-media])]:col-start-2;
+  }
+
+  .description {
+    @apply text-sm text-balance text-muted-foreground md:text-pretty;
+    @apply *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground;
+  }
+}

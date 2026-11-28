@@ -1,0 +1,15 @@
+@reference "../../styles/reference.css";
+
+/*
+ * Rules live in the `components` layer so Tailwind utilities passed via
+ * `className` (which live in `utilities`) always win.
+ */
+@layer components {
+  .icon {
+    @apply size-4;
+  }
+
+  .spinner {
+    @apply size-4 animate-spin;
+  }
+}
